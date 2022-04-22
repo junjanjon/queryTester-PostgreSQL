@@ -5,6 +5,11 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+env:
+  USER: tester
+  PGPASSWORD: postgres
+  DB: postgres
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -15,13 +20,21 @@ jobs:
         # 動かすコンテナで使う環境変数
         # この場合はpostgresqlのパスワードを指定している。
         env:
-          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: ${USER}
+          POSTGRES_PASSWORD: ${PGPASSWORD}
+          POSTGRES_DB: ${DB}
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+        ports:
+          - 5432:5432
+    container:
+      # runner のイメージ
+      # Docker Hubのイメージ
+      image: postgres
     steps:
       - name: Hello, world
         run: |
-          echo "Hello, world"
+          psql -h localhost -U ${USER} -d ${DB} -c "SELECT 'Hello, world';"
