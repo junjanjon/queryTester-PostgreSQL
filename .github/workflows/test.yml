@@ -6,6 +6,7 @@ on:
   workflow_dispatch:
 
 env:
+  # ランナーで使う環境変数
   USER: tester
   PGPASSWORD: postgres
   DB: postgres
@@ -18,11 +19,10 @@ jobs:
         # Docker Hubのイメージ
         image: postgres
         # 動かすコンテナで使う環境変数
-        # この場合はpostgresqlのパスワードを指定している。
         env:
-          POSTGRES_USER: ${USER}
-          POSTGRES_PASSWORD: ${PGPASSWORD}
-          POSTGRES_DB: ${DB}
+          POSTGRES_USER: tester
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
