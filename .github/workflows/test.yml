@@ -17,7 +17,7 @@ jobs:
     services:
       postgres:
         # Docker Hubのイメージ
-        image: postgres
+        image: postgis/postgis
         # 動かすコンテナで使う環境変数
         env:
           POSTGRES_USER: tester
