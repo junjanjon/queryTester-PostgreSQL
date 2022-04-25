@@ -33,6 +33,13 @@ jobs:
       # Docker Hubのイメージ
       image: postgres
     steps:
+      - uses: actions/checkout@v2
       - name: Hello, world
         run: |
           psql -h postgres -U ${USER} -d ${DB} -c "SELECT 'Hello, world';"
+      - name: init
+        run: |
+          psql -h postgres -U ${USER} -d ${DB} -f queries/create_extensions.sql
+      - name: tests
+        run: |
+          psql -h postgres -U ${USER} -d ${DB} -f queries/tests.sql
